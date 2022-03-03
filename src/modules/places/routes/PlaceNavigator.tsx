@@ -1,7 +1,11 @@
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
-import { PlaceListScreen } from '../screens/PlacesList.screen';
 
+import { AddPlaceScreen } from '../screens/AddPlace.screen';
+import { EditPlaceScreen } from '../screens/EditPlace.screen';
+import { MapScreen } from '../screens/Map.screen';
+import { PlaceDetailsScreen } from '../screens/PlacesDetails.screen';
+import { PlaceListScreen } from '../screens/PlacesList.screen';
 import { PlaceRoutes } from './PlaceNavigator.types';
 
 const Stack = createStackNavigator();
@@ -13,12 +17,30 @@ export const PlaceNavigator: React.FC<{
 }> = (props) => (
   <Stack.Navigator
     screenOptions={props.defaultNavigatorOptions}
-    initialRouteName={PlaceRoutes.PlaceList}
+    initialRouteName={PlaceRoutes.List}
   >
     <Stack.Screen
-      name={PlaceRoutes.PlaceList}
+      name={PlaceRoutes.List}
       component={PlaceListScreen}
-      options={props.drawerIconOptions(() => ({}))}
+      options={props.drawerIconOptions((data: any) => ({
+        headerRight: () => (<props.HeaderButton icon='plus' onPress={() => data.navigation.navigate(PlaceRoutes.Add)}/>)
+      }))}
+    />
+    <Stack.Screen
+      name={PlaceRoutes.Details}
+      component={PlaceDetailsScreen}
+    />
+    <Stack.Screen
+      name={PlaceRoutes.Edit}
+      component={EditPlaceScreen}
+    />
+    <Stack.Screen
+      name={PlaceRoutes.Add}
+      component={AddPlaceScreen}
+    />
+    <Stack.Screen
+      name={PlaceRoutes.Map}
+      component={MapScreen}
     />
   </Stack.Navigator>
 );

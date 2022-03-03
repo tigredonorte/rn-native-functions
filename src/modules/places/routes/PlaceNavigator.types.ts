@@ -1,11 +1,15 @@
 export enum PlaceRoutes {
-    PlaceList = "PlaceList",
-    PlaceDetails = "PlaceDetails",
-    PlaceForm = "PlaceForm",
+    List = "PlaceList",
+    Details = "PlaceDetails",
+    Add = "PlaceAdd",
+    Edit = "PlaceEdit",
+    Map = "PlaceMap",
 }
 
 export type PlaceStackType = {
-    [PlaceRoutes.PlaceList]: undefined;
-    [PlaceRoutes.PlaceDetails]: { id: string; title: string; };
-    [PlaceRoutes.PlaceForm]: undefined;
+    [PlaceRoutes.List]: undefined;
+    [PlaceRoutes.Details]: { id: string; title: string; };
+    [PlaceRoutes.Add]: undefined;
+    [PlaceRoutes.Edit]: { id: string; title: string; };
+    [PlaceRoutes.Map]: { id: string; title: string; };
 };

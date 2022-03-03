@@ -31,10 +31,16 @@ export const FormItem = (props: FormItemInput) => {
             value
         });
     }
+    const setTouched = () => {
+        if (!field.touched) {
+            setField((field) => ({ ...field, touched: true }));
+            updateForm(field.value);
+        }
+    }
 
     const onChangeText = (value: any) => {
         const validityState = checkValidity(props.formItem.validationFn, value);
-        setField({ value, validityState, touched: true });
+        setField(field => ({ ...field, value, validityState }));
         debounced(value);
     };
 
@@ -44,13 +50,13 @@ export const FormItem = (props: FormItemInput) => {
             ? <>
                 <View style={Styles.formItem}>
                     <TextInput
-                        mode='outlined'
                         value={field.value}
                         placeholder={props.formItem.title}
                         label={props.formItem.label || props.formItem.title}
                         error={field.touched&&!field.validityState.valid}
                         {...extraParams}
                         onChangeText={onChangeText}
+                        onEndEditing={setTouched}
                     />
                     {
                         field.touched && !field.validityState.valid && 

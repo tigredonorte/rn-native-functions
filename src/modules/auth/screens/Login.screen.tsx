@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import i18next from 'i18next';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { Card, Title } from 'react-native-paper';
@@ -13,7 +14,6 @@ import {
 } from '~app/components/Form';
 
 import { ToggleLoginSignup } from '../components/ToggleLoginSignup.component';
-import { i18nAuth } from '../i18n';
 import { AuthRoutes, AuthStackType } from '../routes/Auth.routes.types';
 import { LoginAction } from '../store/auth.action';
 import { ILoginModel } from '../store/auth.model';
@@ -43,6 +43,7 @@ export const LoginSScreen: React.FunctionComponent<LoginInput> = (props) => {
             key: 'email',
             formType: 'email',
             title: "Email",
+            label: 'Your best email',
             validationFn: [
                 ValidateRequired,
                 ValidateMinLength(5),
@@ -54,6 +55,7 @@ export const LoginSScreen: React.FunctionComponent<LoginInput> = (props) => {
             value: '',
             formType: 'password',
             title: "Password",
+            label: 'Your password',
             validationFn: [
                 ValidateRequired,
                 ValidateMinLength(5)
@@ -64,7 +66,7 @@ export const LoginSScreen: React.FunctionComponent<LoginInput> = (props) => {
     return (
         <View style={Styles.container}>
             <Card style={Styles.card}>
-                <Title style={Styles.title}>{i18nAuth.t('login.title')}</Title>
+                <Title style={Styles.title}>{i18next.t('login.title')}</Title>
                 <FormContainerComponent
                     isEditing={false}
                     onSave={(data) => onSave(data as ILoginModel)}

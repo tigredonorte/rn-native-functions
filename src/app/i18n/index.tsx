@@ -22,6 +22,6 @@ i18next.init({
   nsSeparator: '::',
 });
 
-export const i18nAuth = i18next;
+export const i18n = i18next;
 
 export default i18next;

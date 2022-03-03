@@ -9,9 +9,7 @@ export interface FetchStateInput {
     empty?: FetchStateEmptyInput & {
         isEmpty: boolean;
     };
-    error?: FetchStateErrorInput & {
-        hasError: boolean;
-    };
+    error?: FetchStateErrorInput;
 }
 
 export const FetchStateContainer: React.FunctionComponent<FetchStateInput> = (props) => {
@@ -20,7 +18,7 @@ export const FetchStateContainer: React.FunctionComponent<FetchStateInput> = (pr
         return <FetchStateLoading />;
     }
 
-    if (props.error?.hasError) {
+    if (!!props.error?.errorText) {
         return <FetchStateError
             errorText={props.error?.errorText || ''}
             btnText={props.error?.btnText}

@@ -41,7 +41,7 @@ const Styles = StyleSheet.create({
     },
     button: {
         fontSize: 15,
-        color: theme.colors.backdrop,
+        color: theme.colors.text,
     },
     buttonMain: {
         fontSize: 15,

@@ -14,7 +14,7 @@ export const HeaderButton: React.FC<HeaderButtonInput> = (props: HeaderButtonInp
         <IconButton
             icon={props.icon}
             style={props.style}
-            color={theme.colors.primaryContrast}
+            color={theme.colors.white}
             size={fontSizer('icon')}
             onPress={props.onPress}
         />

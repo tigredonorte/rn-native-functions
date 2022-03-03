@@ -1,12 +1,12 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import { IconButton } from 'react-native-paper';
-import { defaultNavigatorOptions, drawerIconOptions } from '../defaults/ScreenOptions';
-import { CustomDrawerContent } from '../defaults/CustomDrawer';
-import { SystemRoutes } from './System.routes.types';
-import { PlaceRoutes } from '~modules/places/routes/PlaceNavigator.types';
-import { PlaceNavigator } from '~modules/places/routes/PlaceNavigator';
 import { HeaderButton } from '~app/components/UI/src/HeaderButton.component';
+import { PlaceNavigator } from '~modules/places/routes/PlaceNavigator';
+
+import { CustomDrawerContent } from '../defaults/CustomDrawer';
+import { defaultNavigatorOptions, drawerIconOptions } from '../defaults/ScreenOptions';
+import { SystemRoutes } from './System.routes.types';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,7 +20,7 @@ export const SystemNavigator = () => (
     useLegacyImplementation={false}
     screenOptions={{ headerShown: false }}
     drawerContent={(props): React.ReactElement => <CustomDrawerContent {...props} />}
-    initialRouteName={PlaceRoutes.PlaceList}
+    initialRouteName={SystemRoutes.Places}
   >
     <Drawer.Screen
       name={SystemRoutes.Places}

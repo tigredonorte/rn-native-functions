@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+import { LogBox } from 'react-native';
 import { ThunkDispatch } from 'redux-thunk';
 
 import { AuthUserModel, ILoginModel, ISignupModel } from './auth.model';
@@ -34,6 +35,8 @@ const setLogoutTimer = (expirationTime: number) => {
         if (isNaN(expirationTime)) {
             return;
         }
+        // ignoring this specific warning
+        LogBox.ignoreLogs([ `${expirationTime}` ]);
         timer = setTimeout(() => {
             dispatch(logoutAction());
         }, expirationTime);

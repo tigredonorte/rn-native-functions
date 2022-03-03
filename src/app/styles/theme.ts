@@ -12,17 +12,18 @@ export const theme = {
     roundness: 2,
     colors: {
         ...DefaultTheme.colors,
-        primary: '#4F9F64',
-        accent: '#D49F6A',
-        background: '#f1f1f1',
-        surface: '#DEDEDE',
+        primary: '#00A22B',
+        accent: '#D96C00',
+        background: '#ffffff',
+        surface: '#e1e1e1',
         onSurface: '#DEDEDE',
-        text: '#555b5b',
+        text: '#222',
         disabled: '#C3C6C6',
-        error: '#DE1F79',
-        placeholder: '#2D2D2D',
+        error: '#FF0079',
+        placeholder: '#a2a2a2',
         backdrop: '#f1f1f1',
-        notification: '#FF9023'
+        notification: '#FF9023',
+        white: '#f1f1f1'
     },
     fonts: {
         ...DefaultTheme.fonts,
