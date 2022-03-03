@@ -30,8 +30,7 @@ export const PlaceDetailsScreen: FunctionComponent<PlaceDetailsInput> = (props: 
                     <Card.Title title={place?.title} />
                     <Card.Cover source={{ uri: place?.image }} />
                     <Card.Content>
-                        <Paragraph>{place?.location}</Paragraph>
-                        <Paragraph>{place?.description}</Paragraph>
+                        <Paragraph>{place?.address}</Paragraph>
                     </Card.Content>
                 </Card>
             </ScrollView>

@@ -6,6 +6,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { FormItemType, FormState, InputType } from '../model/FormFieldModel';
 import { checkValidity, initField } from '../model/FormItemFunctions';
 import { FormErrorComponent } from './ErrorComponent';
+import { ImagePickerComponent } from './ImagePicker.component';
 
 interface FormItemInput {
     formItem: FormItemType;
@@ -19,9 +20,7 @@ export const FormItem = (props: FormItemInput) => {
         ...initField(props.formItem),
         touched: false
     });
-    const debounced = useDebouncedCallback((value: any) => updateForm(value), 400);
-
-    const updateForm = (value: any) => {
+    const updateForm = useDebouncedCallback((value: any) => {
         if (!field.touched) {
             return;
         }
@@ -30,7 +29,8 @@ export const FormItem = (props: FormItemInput) => {
             valid: field.validityState.valid,
             value
         });
-    }
+    }, 400);
+
     const setTouched = () => {
         if (!field.touched) {
             setField((field) => ({ ...field, touched: true }));
@@ -41,10 +41,19 @@ export const FormItem = (props: FormItemInput) => {
     const onChangeText = (value: any) => {
         const validityState = checkValidity(props.formItem.validationFn, value);
         setField(field => ({ ...field, value, validityState }));
-        debounced(value);
+        updateForm(value);
     };
 
     const extraParams = { ...InputType[props.formItem.formType], ...props.formItem?.extraParams };
+    if (props.formItem.formType === 'imagePicker') {
+        return <View style={Styles.formItem}>
+            <ImagePickerComponent onImageTaken={(img) => {
+                setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: img });
+                updateForm(img);
+            }} />
+        </View>;
+    }
+
     return (
         (!props.isEditing || (props.isEditing && props.formItem.editable))
             ? <>

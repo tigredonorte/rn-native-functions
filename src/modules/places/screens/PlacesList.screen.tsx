@@ -2,7 +2,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import i18next from 'i18next';
 import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchStateContainer } from '~app/components/FetchStatus';
 
@@ -57,9 +56,7 @@ export const PlaceListScreen: FunctionComponent<PlaceListInput> = (props: PlaceL
                 renderItem={(item) => <PlaceListItemComponent
                     item={item.item}
                     onClick={navigate}
-                > 
-                    <Button onPress={() => navigate(item.item)}>{i18next.t('PlaceList.seePlace')}</Button>
-                </PlaceListItemComponent>}
+                ></PlaceListItemComponent>}
             />
         </FetchStateContainer>
     );

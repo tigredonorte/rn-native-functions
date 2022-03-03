@@ -5,10 +5,10 @@ import { PlacesModel } from '../store/places';
 export const getFormParameters = (place?: PlacesModel): form.FormParameters => [
     form.creatFormBase({
         key: 'title',
-        value: place?.title,
-        formType: 'text',
         title: "The place title",
         label: 'Title',
+        value: place?.title,
+        formType: 'text',
         validationFn: [
             form.ValidateRequired,
             form.ValidateMinLength(2),
@@ -21,19 +21,20 @@ export const getFormParameters = (place?: PlacesModel): form.FormParameters => [
     }),
     form.creatFormBase({
         key: 'image',
-        value: place?.image || '',
-        formType: 'url',
         title: "Image",
+        label: 'Pic a good image!',
+        value: place?.image || '',
+        formType: 'imagePicker',
         validationFn: [
-            form.ValidateRequired,
-            form.ValidateUrl,
+            form.ValidateRequired
         ],
     }),
     form.creatFormBase({
         key: 'location',
+        title: "Address",
+        label: 'Location address',
         value: place?.location,
         formType: 'text',
-        title: "Title",
         validationFn: [
             form.ValidateRequired,
             form.ValidateMinLength(2),
@@ -43,18 +44,5 @@ export const getFormParameters = (place?: PlacesModel): form.FormParameters => [
             autoCapitalize: 'sentences',
             autoCorrect: true
         }
-    }),
-    form.creatFormBase({
-        key: 'description',
-        value: place?.description || '',
-        formType: 'textArea',
-        title: "Description",
-        extraParams: {
-            autoCorrect: true
-        },
-        validationFn: [
-            form.ValidateRequired,
-            form.ValidateMinLength(40),
-        ],
     }),
 ];

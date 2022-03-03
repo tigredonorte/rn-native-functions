@@ -17,7 +17,8 @@ export const InputType: { [s: string]: Partial<TextInputProps> } = {
     password: {
         secureTextEntry: true,
         autoCapitalize: 'none',
-    }
+    },
+    imagePicker: {}
 };
 
 export interface FormState {

@@ -1,7 +1,8 @@
 export interface PlacesModel {
     id: string;
     title: string;
-    location: string;
+    address: string;
     image: string;
-    description: string;
+    lat: number;
+    lng: number;
 }

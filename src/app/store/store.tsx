@@ -6,7 +6,9 @@ import env from '~environments';
 import { Provider } from 'react-redux';
 import { AuthReducer } from '~modules/auth/store/auth.reducer';
 import { AuthStateName } from '~modules/auth/store/auth.state';
-import { PlacesReducer, PlacesStateName } from '~modules/places/store/places';
+import { PlacesDb, PlacesReducer, PlacesStateName } from '~modules/places/store/places/index';
+
+PlacesDb.initPlacesDb().catch(() => console.log('db error'));
 
 const reducers = combineReducers({
     [PlacesStateName]: PlacesReducer,

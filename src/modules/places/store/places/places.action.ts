@@ -1,4 +1,6 @@
+import * as FileSystem from 'expo-file-system';
 import { ThunkDispatch } from 'redux-thunk';
+import { PlacesDb } from './places.db';
 
 import { PlacesModel } from './places.model';
 import { PlacesState as State } from './places.state';
@@ -14,7 +16,8 @@ export interface IListPlaces { type: PlacesActionType.List; places: PlacesModel[
 export const ListPlacesAction = () => {
     return async(dispatch: ThunkDispatch<State, any, IListPlaces>): Promise<void> => {
         try {
-            const places: PlacesModel[] = [];
+            const data = await PlacesDb.listPlace();
+            const places: PlacesModel[] = data?.rows?._array || [];
             dispatch({ type: PlacesActionType.List, places });
         } catch (error) {
             throw error;
@@ -26,7 +29,16 @@ export interface ICreatePlace { type: PlacesActionType.Create; place: PlacesMode
 export const CreatePlacesAction = (place: PlacesModel) => {
     return async(dispatch: ThunkDispatch<State, any, ICreatePlace>): Promise<void> => {
         try {
-            dispatch({ type: PlacesActionType.Create, place });
+            const filename = place.image.split('/').pop();
+            const newPath = (FileSystem?.documentDirectory || '') + filename;
+            await FileSystem.moveAsync({
+                from: place.image,
+                to: newPath
+            });
+
+            place = { ...place, image: newPath, lat: 10, lng: 10 };
+            const data = await PlacesDb.insertPlace(place);
+            dispatch({ type: PlacesActionType.Create, place: { ...place, id: data.insertId } });
         } catch (error) {
             throw error;
         }

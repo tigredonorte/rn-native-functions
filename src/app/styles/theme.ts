@@ -12,10 +12,19 @@ export const theme = {
     roundness: 2,
     colors: {
         ...DefaultTheme.colors,
+        /**
+         * This is the primary color
+         */
         primary: '#00A22B',
+        /**
+         * This is the secondary color
+         */
         accent: '#D96C00',
         background: '#ffffff',
-        surface: '#e1e1e1',
+        /**
+         * Background color used on cards
+         */
+        surface: '#ffffff',
         onSurface: '#DEDEDE',
         text: '#222',
         disabled: '#C3C6C6',

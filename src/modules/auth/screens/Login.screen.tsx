@@ -42,8 +42,8 @@ export const LoginSScreen: React.FunctionComponent<LoginInput> = (props) => {
         creatFormBase({
             key: 'email',
             formType: 'email',
-            title: "Email",
-            label: 'Your best email',
+            label: "Email",
+            title: 'Your best email',
             validationFn: [
                 ValidateRequired,
                 ValidateMinLength(5),
@@ -54,8 +54,8 @@ export const LoginSScreen: React.FunctionComponent<LoginInput> = (props) => {
             key: 'password',
             value: '',
             formType: 'password',
-            title: "Password",
-            label: 'Your password',
+            label: "Password",
+            title: 'Your password',
             validationFn: [
                 ValidateRequired,
                 ValidateMinLength(5)
