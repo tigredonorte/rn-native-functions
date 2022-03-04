@@ -6,6 +6,7 @@ export class PlacesDb {
 
     private static db = Sqlite.openDatabase('places.db');
     private static tableName = 'places';
+    public static debug = false;
 
     public static initPlacesDb = (): Promise<any> => {
         return PlacesDb.runQuery(
@@ -54,7 +55,9 @@ export class PlacesDb {
     }
 
     private static runQuery = (query: string, args: (string | number)[] = []): Promise<any> => {
-        console.log({ query, args });
+        if (PlacesDb.debug) {
+            console.log({ query, args });
+        }
         return new Promise((res, rej) => {
             PlacesDb.db.transaction((tx) => {
                 tx.executeSql(query, args, (_, result) => res(result), (_, err) => {

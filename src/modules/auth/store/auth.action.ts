@@ -103,7 +103,7 @@ export const SignupAction = (payload: ISignupModel) => {
 
 export const LoginAction = (payload: ILoginModel) => {
     return async(dispatch: ThunkDispatch<State, any, IAuthenticate>): Promise<void> => {
-        try {        
+        try {
             const resData = await requestService({
                 url: 'signInWithPassword',
                 data: { ...payload, returnSecureToken: true },

@@ -50,7 +50,6 @@ export const FetchContainer: React.FunctionComponent<FetchContainerInput> = (pro
         }}
         error={{ 
             errorText: props.errorText || errorMessage,
-            hasError: !!errorMessage,
             btnText: props.errorBtnText,
             fetchDataFn: loadData
         }}

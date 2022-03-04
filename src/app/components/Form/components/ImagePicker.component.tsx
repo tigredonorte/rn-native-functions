@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { Alert, Image, StyleSheet, View } from 'react-native';
-import { Button, Card, Text } from 'react-native-paper';
-import { theme } from '~app/styles/theme';
 import * as ImagePicker from 'expo-image-picker';
-import { useValue } from 'react-native-reanimated';
+import React, { useState } from 'react';
+import { Alert, StyleSheet } from 'react-native';
+import { Button, Card } from 'react-native-paper';
 
 interface ImagePickerInput {
     onImageTaken: (imgUri: string) => void;
@@ -12,26 +10,42 @@ interface ImagePickerInput {
 export const ImagePickerComponent: React.FC<ImagePickerInput> = (props) => {
 
     const [ image, setImage ] = useState<string>();
-    const takeImage = async() => {
-        const img = await ImagePicker.launchCameraAsync({
+
+    const requestPermission = async() => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if ( status !== 'granted') {
+            throw new Error('You need to grant camera permission to use this app')
+        }
+    }
+
+    const getImage = async() => {
+        return await ImagePicker.launchCameraAsync({
             allowsEditing: true,
             aspect: [ 16, 9 ],
-            quality: 0.5
+            quality: 0.8
         });
+    }
 
-        if (img.cancelled === true) {
-            return;
+    const takeImage = async() => {
+        try {
+            await requestPermission();
+            const img = await getImage();
+            if (img.cancelled === true) {
+                return;
+            }
+            setImage(img.uri);
+            props.onImageTaken(img.uri);
+        } catch (error: any) {
+            Alert.alert('Could not get the image', error, [{ text: 'ok' }]);
         }
-        setImage(img.uri);
-        props.onImageTaken(img.uri);
     }
 
     return (
-        <Card style={Styles.imagePreview} onPress={takeImage}> 
+        <Card style={!image ? Styles.imagePreview : Styles.imagePreview2 } onPress={takeImage}> 
             {
                 image 
                     ? <Card.Cover style={Styles.image} source={{ uri: image }}/>
-                    : <Card.Content style={Styles.button}>
+                    : <Card.Content style={Styles.buttonContainer}>
                           <Button onPress={takeImage} icon="camera"> Take Image </Button>
                       </Card.Content>
             }
@@ -41,16 +55,17 @@ export const ImagePickerComponent: React.FC<ImagePickerInput> = (props) => {
 
 const Styles = StyleSheet.create({
     imagePreview: {
+        flex: 1
+    },
+    imagePreview2: {
         flex: 1,
-        height: 200,
-        borderWidth: 1,
-        borderColor: theme.colors.accent
+        height: 200
     },
     image: {
         width: '100%',
         height: '100%',
     },
-    button: {
+    buttonContainer: {
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center'

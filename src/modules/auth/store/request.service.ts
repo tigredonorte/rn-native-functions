@@ -18,7 +18,7 @@ interface UserData {
     localId: string;
 }
 
-const getUrl = (url: string) => `${AUTH_SERVICE_URL}?key=${AUTH_SERVICE_KEY}`
+const getUrl = (url: string) => `${AUTH_SERVICE_URL}${url}?key=${AUTH_SERVICE_KEY}`
 
 export const getUserData = async(): Promise<UserData> => {
     const userData = await SecureStore.getItemAsync(AuthStateName);
@@ -34,6 +34,7 @@ export const requestService = async(post: AuthRequest, errorCallback?: (data: an
         userData = await getUserData();
         post.data['idToken'] = userData.idToken
     }
+    console.log(getUrl(post.url));
     const resp = await fetch(getUrl(post.url), {
         method: 'POST',
         headers: {

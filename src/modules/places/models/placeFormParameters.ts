@@ -30,15 +30,13 @@ export const getFormParameters = (place?: PlacesModel): form.FormParameters => [
         ],
     }),
     form.creatFormBase({
-        key: 'location',
+        key: 'address',
         title: "Address",
         label: 'Location address',
-        value: place?.location,
-        formType: 'text',
+        value: place?.address,
+        formType: 'locationPicker',
         validationFn: [
-            form.ValidateRequired,
-            form.ValidateMinLength(2),
-            form.ValidateMaxLength(20),
+            form.ValidateRequired
         ],
         extraParams: {
             autoCapitalize: 'sentences',

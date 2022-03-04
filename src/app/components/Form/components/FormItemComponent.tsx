@@ -7,6 +7,7 @@ import { FormItemType, FormState, InputType } from '../model/FormFieldModel';
 import { checkValidity, initField } from '../model/FormItemFunctions';
 import { FormErrorComponent } from './ErrorComponent';
 import { ImagePickerComponent } from './ImagePicker.component';
+import { LocationPickerComponent } from './LocationPicker.component';
 
 interface FormItemInput {
     formItem: FormItemType;
@@ -45,14 +46,25 @@ export const FormItem = (props: FormItemInput) => {
     };
 
     const extraParams = { ...InputType[props.formItem.formType], ...props.formItem?.extraParams };
-    if (props.formItem.formType === 'imagePicker') {
-        return <View style={Styles.formItem}>
-            <ImagePickerComponent onImageTaken={(img) => {
-                setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: img });
-                updateForm(img);
-            }} />
-        </View>;
+    
+    switch (props.formItem.formType) {
+        case 'imagePicker':
+            return <View style={Styles.formItem}>
+                <ImagePickerComponent onImageTaken={(img) => {
+                    setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: img });
+                    updateForm(img);
+                }} />
+            </View>;
+    
+        case 'locationPicker' :
+            return <View style={Styles.formItem}>
+                <LocationPickerComponent onLocationTaken={(location) => {
+                    setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: location });
+                    updateForm(location);
+                }} />
+            </View>;
     }
+
 
     return (
         (!props.isEditing || (props.isEditing && props.formItem.editable))
