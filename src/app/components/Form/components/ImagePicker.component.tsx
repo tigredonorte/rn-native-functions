@@ -1,10 +1,11 @@
 import * as ImagePicker from 'expo-image-picker';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Alert, StyleSheet } from 'react-native';
 import { Button, Card } from 'react-native-paper';
 
 interface ImagePickerInput {
     onImageTaken: (imgUri: string) => void;
+    onClearImage: () => void;
 } 
 
 export const ImagePickerComponent: React.FC<ImagePickerInput> = (props) => {
@@ -26,8 +27,9 @@ export const ImagePickerComponent: React.FC<ImagePickerInput> = (props) => {
         });
     }
 
-    const takeImage = async() => {
+    const takeImage = useCallback(async() => {
         try {
+            props.onClearImage();
             await requestPermission();
             const img = await getImage();
             if (img.cancelled === true) {
@@ -38,7 +40,7 @@ export const ImagePickerComponent: React.FC<ImagePickerInput> = (props) => {
         } catch (error: any) {
             Alert.alert('Could not get the image', error, [{ text: 'ok' }]);
         }
-    }
+    }, []);
 
     return (
         <Card style={!image ? Styles.imagePreview : Styles.imagePreview2 } onPress={takeImage}> 

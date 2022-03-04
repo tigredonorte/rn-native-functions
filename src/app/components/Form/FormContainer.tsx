@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useReducer } from 'react';
+import React, { FunctionComponent, useEffect, useReducer, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
@@ -17,9 +17,10 @@ interface FormItemBasic {
 }
 
 interface FormState { 
-    valid: boolean,
-    touched: boolean,
-    items: {[s: string]: FormItemBasic}
+    valid: boolean;
+    touched: boolean;
+    initialized: boolean;
+    items: {[s: string]: FormItemBasic};
 }
 
 type ReducerFn<T, M> = (state: T, action: {type: string; payload: M }) => T;
@@ -32,7 +33,7 @@ const formIsValid = (items: {[s: string]: FormItemBasic} ) => {
     }
     return true;
 }
-const getInitialFormStatus = (form: FormParameters) => {
+const getInitialFormStatus = (form: FormParameters): FormState => {
     const items: {[s: string]: FormItemBasic} = {};
     for (const formItem of form) {
         items[formItem.key] = {
@@ -42,12 +43,13 @@ const getInitialFormStatus = (form: FormParameters) => {
     }
     return {
         items,
+        initialized: true,
         touched: false,
         valid: formIsValid(items)
     };
 }
 
-const formReduceFn = (state: FormState, action: {type: string; payload: any }) => {
+const formReduceFn = (state: FormState, action: {type: string; payload: any }): FormState => {
     if (action.type === 'update') {
         const items = { 
             ...state.items,
@@ -57,6 +59,7 @@ const formReduceFn = (state: FormState, action: {type: string; payload: any }) =
             }
         };
         return ({
+            initialized: true,
             items: { ...items },
             touched: true,
             valid: formIsValid(items)
@@ -65,8 +68,15 @@ const formReduceFn = (state: FormState, action: {type: string; payload: any }) =
     return state;
 };
 
+const initialState: FormState = {
+    items: {},
+    touched: false,
+    valid: false,
+    initialized: false
+};
+
 interface FormContainerInput {
-    isEditing: boolean;
+    isEditing?: boolean;
     formParameters: FormParameters;
     onSave: (data: { [s: string]: any }) => void;
     isSaving: boolean;
@@ -75,11 +85,15 @@ interface FormContainerInput {
 
 export const FormContainerComponent: FunctionComponent<FormContainerInput> = (props) => {
 
+    const { formParameters } = props;
+    const [ state, setState ] = useState<FormState>(initialState);
     const [ formState, formDispatch ] = useReducer<ReducerFn<FormState, FormItemType>, FormState>(
-        formReduceFn, 
-        getInitialFormStatus(props.formParameters),
-        () => getInitialFormStatus(props.formParameters)
+        formReduceFn, state, () => state
     );
+
+    useEffect(() => {
+        setState(getInitialFormStatus(formParameters));
+    }, [ formParameters ]);
 
     const save = () => {
         if (!formState.valid) {
@@ -95,17 +109,14 @@ export const FormContainerComponent: FunctionComponent<FormContainerInput> = (pr
 
     const updateFormItem = (payload: FormItemType) => formDispatch({ type: 'update', payload });
 
-    if (props.isSaving) {
-        return (<FetchStateLoading />);
-    }
-
     return (
         <ScrollView contentContainerStyle={Styles.container}>
             {
                 props.formParameters.map((formItem) => (
                     <FormItem
+                        disabled={props.isSaving}
                         key={formItem.key}
-                        isEditing={props.isEditing}
+                        isEditing={props.isEditing || false}
                         formItem={formItem}
                         updateFormItem={updateFormItem}
                     />

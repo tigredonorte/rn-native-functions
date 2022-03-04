@@ -34,7 +34,7 @@ export const requestService = async(post: AuthRequest, errorCallback?: (data: an
         userData = await getUserData();
         post.data['idToken'] = userData.idToken
     }
-    console.log(getUrl(post.url));
+
     const resp = await fetch(getUrl(post.url), {
         method: 'POST',
         headers: {

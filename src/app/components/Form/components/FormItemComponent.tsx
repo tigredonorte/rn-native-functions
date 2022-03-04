@@ -7,11 +7,12 @@ import { FormItemType, FormState, InputType } from '../model/FormFieldModel';
 import { checkValidity, initField } from '../model/FormItemFunctions';
 import { FormErrorComponent } from './ErrorComponent';
 import { ImagePickerComponent } from './ImagePicker.component';
-import { LocationPickerComponent } from './LocationPicker.component';
+import { LocationPickerComponent } from './map/LocationPicker.component';
 
 interface FormItemInput {
     formItem: FormItemType;
     isEditing: boolean;
+    disabled: boolean;
     updateFormItem: (value: FormItemType) => void;
 }
 
@@ -50,18 +51,30 @@ export const FormItem = (props: FormItemInput) => {
     switch (props.formItem.formType) {
         case 'imagePicker':
             return <View style={Styles.formItem}>
-                <ImagePickerComponent onImageTaken={(img) => {
-                    setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: img });
-                    updateForm(img);
-                }} />
+                <ImagePickerComponent
+                    onImageTaken={(img) => {
+                        setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: img });
+                        updateForm(img);
+                    }}
+                    onClearImage={() => {
+                        setField({ touched: false, validityState: { valid: false, errorMessage: '' }, value: undefined });
+                        updateForm(null);
+                    }}
+                />
             </View>;
     
         case 'locationPicker' :
             return <View style={Styles.formItem}>
-                <LocationPickerComponent onLocationTaken={(location) => {
-                    setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: location });
-                    updateForm(location);
-                }} />
+                <LocationPickerComponent 
+                    onLocationTaken={(location) => {
+                        setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: location });
+                        updateForm(location);
+                    }}
+                    onClearLocation={() => {
+                        setField({ touched: false, validityState: { valid: false, errorMessage: '' }, value: undefined });
+                        updateForm(null);
+                    }}
+                />
             </View>;
     }
 

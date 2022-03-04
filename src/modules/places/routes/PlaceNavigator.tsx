@@ -3,7 +3,6 @@ import React from 'react';
 
 import { AddPlaceScreen } from '../screens/AddPlace.screen';
 import { EditPlaceScreen } from '../screens/EditPlace.screen';
-import { MapScreen } from '../screens/Map.screen';
 import { PlaceDetailsScreen } from '../screens/PlacesDetails.screen';
 import { PlaceListScreen } from '../screens/PlacesList.screen';
 import { PlaceRoutes } from './PlaceNavigator.types';
@@ -37,10 +36,6 @@ export const PlaceNavigator: React.FC<{
     <Stack.Screen
       name={PlaceRoutes.Add}
       component={AddPlaceScreen}
-    />
-    <Stack.Screen
-      name={PlaceRoutes.Map}
-      component={MapScreen}
     />
   </Stack.Navigator>
 );

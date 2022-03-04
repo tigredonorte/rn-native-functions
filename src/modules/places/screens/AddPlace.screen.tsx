@@ -15,7 +15,7 @@ interface AddPlaceInput extends NativeStackScreenProps<PlaceStackType, PlaceRout
 
 export const AddPlaceScreen: FunctionComponent<AddPlaceInput> = (props) => {
 
-    const formParameters = getFormParameters();
+    const [ formParameters, setFormParameters ] = useState(getFormParameters());
     const [ isSaving, setIsSaving ] = useState(false);
     const dispatch = useDispatch();
 
@@ -26,7 +26,14 @@ export const AddPlaceScreen: FunctionComponent<AddPlaceInput> = (props) => {
     const onSave = useCallback(async(data: any) => {
         try {
             setIsSaving(true);
-            await dispatch(CreatePlacesAction(data))
+            data = {
+                ...data,
+                lat: data?.address?.latitude,
+                lng: data?.address?.longitude,
+                address: data?.address?.address,
+            };
+            setFormParameters(getFormParameters(data));
+            await dispatch(CreatePlacesAction(data));
             props.navigation.goBack();
         } catch (error: any) {
             showError(error.message);
@@ -40,7 +47,7 @@ export const AddPlaceScreen: FunctionComponent<AddPlaceInput> = (props) => {
 
     return (
         <FormContainerComponent
-            isEditing={false}
+            isEditing={isSaving}
             onSave={onSave}
             formParameters={formParameters}
             isSaving={isSaving}

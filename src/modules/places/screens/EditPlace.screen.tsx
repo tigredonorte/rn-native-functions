@@ -39,6 +39,12 @@ export const EditPlaceScreen: FunctionComponent<EditPlaceInput> = (props) => {
         try {
             setErrorMessage(undefined);
             setIsSaving(true);
+            data = { 
+                ...data,
+                lat: data?.address?.latitude,
+                lng: data?.address?.longitude,
+                address: data?.address?.address,
+            };
             await dispatch(UpdatePlacesAction(props?.route?.params?.id ?? '', data))
             props.navigation.goBack();
         } catch (error: any) {

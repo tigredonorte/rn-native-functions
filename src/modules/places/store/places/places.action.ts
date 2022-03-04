@@ -31,12 +31,13 @@ export const CreatePlacesAction = (place: PlacesModel) => {
         try {
             const filename = place.image.split('/').pop();
             const newPath = (FileSystem?.documentDirectory || '') + filename;
+
             await FileSystem.moveAsync({
                 from: place.image,
                 to: newPath
             });
 
-            place = { ...place, image: newPath, lat: 10, lng: 10 };
+            place = { ...place, image: newPath };
             const data = await PlacesDb.insertPlace(place);
             dispatch({ type: PlacesActionType.Create, place: { ...place, id: data.insertId } });
         } catch (error) {

@@ -1,11 +1,10 @@
-import { LocationObjectCoords } from 'expo-location';
+import { GOOGLE_MAPS_KEY } from '@env';
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
-import { GOOGLE_MAPS_KEY } from '@env';
 
 interface MapPreviewInput {
-    location: LocationObjectCoords
+    location: { latitude: number; longitude: number; }
 } 
 
 export const MapPreviewComponent: React.FC<MapPreviewInput> = (props) => {

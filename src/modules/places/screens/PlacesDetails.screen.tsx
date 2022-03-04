@@ -1,9 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import i18next from 'i18next';
-import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import MapView, { Marker, Region } from 'react-native-maps';
 import { Card, Paragraph } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FetchStateContainer } from '~app/components/FetchStatus';
 
 import { PlaceRoutes, PlaceStackType } from '../routes/PlaceNavigator.types';
@@ -13,12 +14,27 @@ import { getPlaceById } from '../store/places';
 interface PlaceDetailsInput extends NativeStackScreenProps<PlaceStackType, PlaceRoutes.Details> { } 
 
 export const PlaceDetailsScreen: FunctionComponent<PlaceDetailsInput> = (props: PlaceDetailsInput) => {
+
     const place = useSelector(getPlaceById(props.route.params.id));
-    const dispatch = useDispatch();
+    const [ mapRegion, setMapRegion ] = useState<Region>();
 
     useEffect(() => {
         props.navigation.setOptions({ title: props.route.params.title });
     }, []);
+
+    useEffect(() => {
+        if (!place) {
+            return;
+        }
+
+        setMapRegion({
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.05,
+            latitude: place.lat,
+            longitude: place.lng
+        });
+
+    }, [ place ]);
 
     return (
         <FetchStateContainer
@@ -31,6 +47,9 @@ export const PlaceDetailsScreen: FunctionComponent<PlaceDetailsInput> = (props: 
                     <Card.Cover source={{ uri: place?.image }} />
                     <Card.Content>
                         <Paragraph>{place?.address}</Paragraph>
+                        <MapView region={mapRegion} style={Styles.map}>
+                            {mapRegion && <Marker title='Picked location' coordinate={mapRegion}></Marker> }
+                        </MapView>
                     </Card.Content>
                 </Card>
             </ScrollView>
@@ -46,5 +65,8 @@ const Styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-    }
+    },
+    map: {
+        height: 200
+    },
 });
