@@ -1,5 +1,5 @@
-import env from "~environments";
+import { SERVICE_URL } from '@env';
 
 export class BaseRequestService {
-    private serviceUrl = env.serviceUrl;
+    private static serviceUrl = SERVICE_URL;
 }

@@ -9,9 +9,13 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
+    "typeRoots": ["./src/types"],
     "paths": {
       "~*": [
         "./src/*"
+      ],
+      "@env": [
+        ".env",
       ]
     },
   },

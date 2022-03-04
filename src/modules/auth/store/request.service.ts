@@ -1,6 +1,6 @@
+import { AUTH_SERVICE_KEY, AUTH_SERVICE_URL } from '@env';
 import * as SecureStore from 'expo-secure-store';
-import env from '~environments';
-import { i18nAuth } from '../i18n';
+import i18next from 'i18next';
 
 import { AuthStateName } from './auth.state';
 
@@ -18,7 +18,7 @@ interface UserData {
     localId: string;
 }
 
-const getUrl = (url: string) => `${env.authServiceUrl}${url}?key=${env.authServiceKey}`
+const getUrl = (url: string) => `${AUTH_SERVICE_URL}?key=${AUTH_SERVICE_KEY}`
 
 export const getUserData = async(): Promise<UserData> => {
     const userData = await SecureStore.getItemAsync(AuthStateName);
@@ -50,7 +50,7 @@ export const requestService = async(post: AuthRequest, errorCallback?: (data: an
 
     if (!errorCallback) {
         const message = response?.error?.errors[0]?.message;
-        const translated = i18nAuth.t(message);
+        const translated = i18next.t(message);
         throw new Error((message === translated || !translated) ? post.errorMessage : translated);
     }
 

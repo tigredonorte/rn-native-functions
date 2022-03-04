@@ -29,7 +29,7 @@ const saveToStorage = async(data: any) => {
 const getFromStorage = async() => JSON.parse(await SecureStore.getItemAsync(AuthStateName) || '');
 const deleteFromStorage =async() => await SecureStore.deleteItemAsync(AuthStateName);
 
-let timer: NodeJS.Timeout;
+let timer: any; // TODO find the real type of it
 const setLogoutTimer = (expirationTime: number) => {
     return async(dispatch: ThunkDispatch<State, any, ILogout>): Promise<void> => {
         if (isNaN(expirationTime)) {
