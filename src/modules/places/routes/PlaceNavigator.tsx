@@ -1,5 +1,6 @@
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { AddPlaceScreen } from '../screens/AddPlace.screen';
 import { EditPlaceScreen } from '../screens/EditPlace.screen';

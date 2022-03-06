@@ -17,6 +17,11 @@ export const ImagePickerComponent: React.FC<ImagePickerInput> = (props) => {
         if ( status !== 'granted') {
             throw new Error('You need to grant camera permission to use this app')
         }
+
+        const data = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if ( data.status !== 'granted') {
+            throw new Error('You need to grant media library permission to use this app')
+        }
     }
 
     const getImage = async() => {

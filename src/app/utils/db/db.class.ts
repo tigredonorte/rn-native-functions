@@ -35,6 +35,13 @@ export class Db<T> {
         );
     }
 
+    public deleteById = (id: string, field: string) => {
+        return this.runQuery(
+            `DELETE FROM ${this.tableName} where ${field}=?`,
+            [ id ],
+        );
+    }
+
     public runQuery = (query: string, args: (string | number)[] = []): Promise<any> => {
         if (this.debug) {
             console.log({ query, args });

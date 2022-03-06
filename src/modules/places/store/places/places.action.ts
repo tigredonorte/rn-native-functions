@@ -50,7 +50,9 @@ export interface IUpdatePlace { type: PlacesActionType.Update; place: PlacesMode
 export const UpdatePlacesAction = (id: string, place: PlacesModel) => {
     return async(dispatch: ThunkDispatch<State, any, IUpdatePlace>): Promise<void> => {
         try {
-            dispatch({ type: PlacesActionType.Update, place, id });
+            const data = await PlacesDb.editPlace(id, place);
+            console.log({ data });
+            dispatch({ type: PlacesActionType.Update, id, place });
         } catch (error) {
             throw error;
         }
@@ -58,11 +60,15 @@ export const UpdatePlacesAction = (id: string, place: PlacesModel) => {
 }
 
 export interface IDeletePlace { type: PlacesActionType.Delete; id: string; };
-export const DeletePlacesAction = (id: string, place: PlacesModel) => {
+export const DeletePlacesAction = (id: string) => {
     return async(dispatch: ThunkDispatch<State, any, IDeletePlace>): Promise<void> => {
         try {
+            PlacesDb.setDebugMode(true);
+            const data = await PlacesDb.deletePlace(id);
+            console.log({ data });
             dispatch({ type: PlacesActionType.Delete, id });
         } catch (error) {
+            PlacesDb.setDebugMode(false);
             throw error;
         }
     };

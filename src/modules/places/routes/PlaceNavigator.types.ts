@@ -1,3 +1,5 @@
+import React from 'react';
+
 export enum PlaceRoutes {
     List = "PlaceList",
     Details = "PlaceDetails",
@@ -8,7 +10,7 @@ export enum PlaceRoutes {
 
 export type PlaceStackType = {
     [PlaceRoutes.List]: undefined;
-    [PlaceRoutes.Details]: { id: string; title: string; };
+    [PlaceRoutes.Details]: { id: string; title: string; HeaderButton: React.FC<any>  };
     [PlaceRoutes.Add]: undefined;
     [PlaceRoutes.Edit]: { id: string; title: string; };
     [PlaceRoutes.Map]: { id: string; title: string; };

@@ -49,9 +49,7 @@ export class PlacesDb {
     }
 
     public static deletePlace = (id: string): Promise<any> => {
-        return PlacesDb.dbClass.runQuery(
-            ``
-        );
+        return PlacesDb.dbClass.deleteById(id, 'id');
     }
 
     public static listPlace = (): Promise<any> => {
