@@ -15,10 +15,19 @@ export const PlacesReducer = GenericReducer<State, any>(initialState, {
             action.place
         ]
     }),
-    [Actions.PlacesActionType.Update]: (state, action: Actions.IUpdatePlace) => ({
-        ...state,
-        places: state.places.map(place => place.id === action.id ? action.place : { ...action.place, ...place })
-    }),
+    [Actions.PlacesActionType.Update]: (state, action: Actions.IUpdatePlace) => {
+        const places = [ ...state.places ];
+        const index = places.findIndex(it => action.id === it.id);
+        places[index] = {
+            ...places[index],
+            ...action.place
+        };
+
+        return {
+            ...state,
+            places: [ ...places ]
+        }
+    },
     [Actions.PlacesActionType.Delete]: (state, action: Actions.IDeletePlace) => ({
         ...state,
         places: state.places.filter(place => place.id !== action.id)

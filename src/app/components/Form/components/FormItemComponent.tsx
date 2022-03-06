@@ -52,6 +52,8 @@ export const FormItem = (props: FormItemInput) => {
         case 'imagePicker':
             return <View style={Styles.formItem}>
                 <ImagePickerComponent
+                    value={field.value}
+                    label={props.formItem.label || props.formItem.title}
                     onImageTaken={(img) => {
                         setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: img });
                         updateForm(img);
@@ -65,7 +67,9 @@ export const FormItem = (props: FormItemInput) => {
     
         case 'locationPicker' :
             return <View style={Styles.formItem}>
-                <LocationPickerComponent 
+                <LocationPickerComponent
+                    value={field.value}
+                    label={props.formItem.label || props.formItem.title}
                     onLocationTaken={(location) => {
                         setField({ touched: true, validityState: { valid: true, errorMessage: '' }, value: location });
                         updateForm(location);

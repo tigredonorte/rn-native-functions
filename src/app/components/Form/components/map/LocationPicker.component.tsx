@@ -8,7 +8,11 @@ import { ActivityIndicator, Button, Card, Dialog, Portal } from 'react-native-pa
 import { LocationPickerMapComponent } from './LocationPickerMap.component';
 import { MapPreviewComponent } from './MapPreview.component';
 
+type LocationType = LatLng & { address: string };
+
 interface LocationPickerInput {
+    label: string;
+    value: LocationType;
     onLocationTaken: (location: LatLng) => void;
     onClearLocation: () => void;
 } 
@@ -17,8 +21,7 @@ export const LocationPickerComponent: React.FC<LocationPickerInput> = (props) =>
 
     const [ showDialog, setShowDialog ] = useState(false);
     const [ isLoading, setLoading ] = useState(false);
-    const [ location, setLocation ] = useState<LatLng & { address: string }>();
-
+    const [ location, setLocation ] = useState<LocationType | undefined>( props.value );
     const requestPermission = async() => {
         const { status } = await LocationPicker.requestForegroundPermissionsAsync();
         if ( status !== 'granted') {

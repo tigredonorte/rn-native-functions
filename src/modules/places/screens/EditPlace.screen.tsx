@@ -4,7 +4,7 @@ import React, { FunctionComponent, useCallback, useEffect, useState } from 'reac
 import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchStateLoading } from '~app/components/FetchStatus';
-import { FormContainerComponent } from '~app/components/Form';
+import { FormContainerComponent, FormParameters } from '~app/components/Form';
 
 import { getFormParameters } from '../models/placeFormParameters';
 import { PlaceRoutes, PlaceStackType } from '../routes/PlaceNavigator.types';
@@ -15,19 +15,28 @@ interface EditPlaceInput extends NativeStackScreenProps<PlaceStackType, PlaceRou
 
 export const EditPlaceScreen: FunctionComponent<EditPlaceInput> = (props) => {
 
-    let formParameters;
+    const [ formParameters, setFormParameters ] = useState<FormParameters>();
     const [ isSaving, setIsSaving ] = useState(false);
     const [ errorMessage, setErrorMessage ] = useState<string>();
-    const place = useSelector(getPlaceById(props.route.params?.id ?? ''));
+    const place = useSelector(getPlaceById(props.route.params.id));
     const dispatch = useDispatch();
 
     useEffect(() => props.navigation.setOptions({ title: props.route.params?.title ?? '' }), []);
 
     useEffect(() => {
-        if (place) {
-            formParameters = getFormParameters(place);
+        if (!place) {
+            return;
         }
-    }, [ place, formParameters ]);
+        setFormParameters(getFormParameters({
+            ...place,
+            // @ts-ignore
+            address: {
+                address: place.address,
+                latitude: place.lat,
+                longitude: place.lng,
+            }
+        }));
+    }, [ place, setFormParameters ]);
 
     useEffect(() => {
         if (errorMessage) {
@@ -39,14 +48,16 @@ export const EditPlaceScreen: FunctionComponent<EditPlaceInput> = (props) => {
         try {
             setErrorMessage(undefined);
             setIsSaving(true);
-            data = { 
-                ...data,
-                lat: data?.address?.latitude,
-                lng: data?.address?.longitude,
-                address: data?.address?.address,
-            };
+            if (data?.address) {
+                data = { 
+                    ...data,
+                    lat: data?.address?.latitude,
+                    lng: data?.address?.longitude,
+                    address: data?.address?.address,
+                };
+            }
             await dispatch(UpdatePlacesAction(props?.route?.params?.id ?? '', data))
-            props.navigation.goBack();
+            props.navigation.navigate(PlaceRoutes.Details, { ...props?.route?.params });
         } catch (error: any) {
             setErrorMessage(error.message);
         }

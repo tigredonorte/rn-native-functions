@@ -4,13 +4,15 @@ import { Alert, StyleSheet } from 'react-native';
 import { Button, Card } from 'react-native-paper';
 
 interface ImagePickerInput {
+    label: string;
+    value: string;
     onImageTaken: (imgUri: string) => void;
     onClearImage: () => void;
 } 
 
 export const ImagePickerComponent: React.FC<ImagePickerInput> = (props) => {
 
-    const [ image, setImage ] = useState<string>();
+    const [ image, setImage ] = useState<string>(props.value);
 
     const requestPermission = async() => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();

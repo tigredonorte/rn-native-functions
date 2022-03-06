@@ -19,37 +19,19 @@ export class PlacesDb {
     }
 
     public static initPlacesDb = (): Promise<any> => {
-        return PlacesDb.dbClass.runQuery(
-            `CREATE TABLE IF NOT EXISTS ${PlacesDb.tableName} (
-                id INTEGER PRIMARY KEY NOT NULL,
-                title TEXT NOT NULL,
-                image TEXT NOT NULL,
-                address TEXT NOT NULL,
-                lat REAL NOT NULL,
-                lng REAL NOT NULL
-            )`
-        );
+        return PlacesDb.dbClass.createTable();
     }
 
     public static insertPlace = (place: PlacesModel): Promise<any> => {
-        PlacesDb.dbClass.validate(place, false);
-        return PlacesDb.dbClass.runQuery(
-            `INSERT INTO ${PlacesDb.tableName} (title, image, address, lat, lng) VALUES (
-                ?, ? ,? ,?, ?
-            );`,
-            [ place.title, place.image, place.address, place.lat, place.lng ]
-        );
+        return PlacesDb.dbClass.add(place);
     }
 
     public static editPlace = (id: string, place: PlacesModel): Promise<any> => {
-        PlacesDb.dbClass.validate(place, true);
-        return PlacesDb.dbClass.runQuery(
-            ``
-        );
+        return PlacesDb.dbClass.edit(id, place);
     }
 
     public static deletePlace = (id: string): Promise<any> => {
-        return PlacesDb.dbClass.deleteById(id, 'id');
+        return PlacesDb.dbClass.deleteById(id);
     }
 
     public static listPlace = (): Promise<any> => {
