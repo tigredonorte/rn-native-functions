@@ -15,7 +15,7 @@ export enum PlacesActionType {
 const moveFile = async(image: string): Promise<string> => {
     const filename = image.split('/').pop();
     const newPath = (FileSystem?.documentDirectory || '') + filename;
-    await FileSystem.moveAsync({
+    await FileSystem.copyAsync({
         from: image,
         to: newPath
     });

@@ -78,7 +78,7 @@ export class Db<T> {
         forEachObjIndexed((val, key) => {
            set.push(`${key}`);
            fakeValues.push(`?`);
-           if (typeof val !== 'string' || typeof val !== 'number') {
+           if (typeof val !== 'string' && typeof val !== 'number') {
                throw new Error(`Invalid value type for ${key}! Must be string or number!`);
            }
            values.push(val);
