@@ -1,6 +1,6 @@
 {
   "expo": {
-    "version": "1.0.1",
+    "version": "1.0.3",
     "name": "My Places",
     "slug": "my-places-mobile",
     "privacy": "public",
@@ -21,13 +21,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "1.0.1",
+      "buildNumber": "1.0.3",
       "bundleIdentifier": "com.thomfilg.my-places-mobile",
       "supportsTablet": true
     },
     "android": {
       "package": "com.thomfilg.my_places_mobile",
-      "versionCode": 2,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./src/app/assets/adaptive-icon.png",
         "backgroundColor": "#f1f1f1"

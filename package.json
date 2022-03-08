@@ -1,6 +1,6 @@
 {
   "name": "rn-native-functions",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "preinstall": "npx only-allow yarn",
@@ -15,7 +15,7 @@
     "build:ios": "eas build --platform ios",
     "build:all": "eas build --platform all",
     "publish:ios": "eas submit --platform ios --latest",
-    "publish:android": "eas submit --platform android --latest",
+    "publish:android": "npm run build:android && eas submit --platform android --latest",
     "publish": "npm run build:all && eas submit --platform all --latest",
     "build": "npm run build:android"
   },

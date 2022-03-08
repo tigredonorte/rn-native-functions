@@ -52,14 +52,21 @@ export const LocationPickerComponent: React.FC<LocationPickerInput> = (props) =>
             throw new Error(`Can't get address`);
         }
         const result = await resp.json();
+        if (result.error_message) {
+            throw new Error(result.error_message);
+        }
         return result?.results[0]?.formatted_address;
     }
 
     const save = async(coords: LatLng) => {
-        const address = await getAddress(coords);
-        const data = { ...coords, address };
-        setLocation(data);
-        props.onLocationTaken(data);
+        try {
+            const address = await getAddress(coords);
+            const data = { ...coords, address };
+            setLocation(data);
+            props.onLocationTaken(data);
+        } catch (error: any) {
+            Alert.alert('Pick location Error', error?.message);
+        }
     }
 
     const takeLocation = async() => {
